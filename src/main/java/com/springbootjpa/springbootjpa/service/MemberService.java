@@ -60,4 +60,13 @@ public class MemberService {
         }
     }
 
+    @Transactional
+    public void update(Long id, String name) {
+        
+        // JPA 수정 시에는 변경 감지 이용
+        
+        Member member = memberRepository.findOne(id);
+        member.setName(name); 
+    }
+
 }
