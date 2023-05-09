@@ -19,7 +19,8 @@ public class MemberApiController {
 
     /**
      * 계정 조회 API
-     *
+     * Entity <-> DTO stream 사용
+     * 
      * @return Result int count, List<findMemberResponse> members
      */
     @GetMapping("/api/v2/members")
@@ -51,7 +52,10 @@ public class MemberApiController {
     public CreateMemberResponse save(@RequestBody @Validated CreateMemberRequest createMemberRequest) {
 
         Member member = new Member();
-        member.setName(createMemberRequest.getName()); // Entity 에서는 setter를 사용 안하지만 이번 강의에서는 편의를 위해 사용
+
+        // Entity 에서는 setter를 사용 안하지만 이번 강의에서는 편의를 위해 사용
+        // Service에서 Builder, MapStruct, ModelMapper 사용 예정
+        member.setName(createMemberRequest.getName());
 
         Long id = memberService.save(member);
 

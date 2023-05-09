@@ -42,7 +42,7 @@ public class MemberService {
      * 회원 상세 조회
      *
      * @param id Long id (pk)
-     * @return Member member
+     * @return Member
      */
     public Member findOne(Long id) {
         return memberRepository.findOne(id);
