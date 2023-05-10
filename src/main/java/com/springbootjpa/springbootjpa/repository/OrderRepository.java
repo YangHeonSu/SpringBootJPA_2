@@ -58,4 +58,18 @@ public class OrderRepository {
         TypedQuery<Order> query = entityManager.createQuery(orderCriteriaQuery).setMaxResults(1000);
         return query.getResultList();
     }
+
+    /**
+     * 주문 목록 조회
+     * 계정과 배달 테이블 조인
+     *
+     * @return List<Order> findAllWithMemberDelivery
+     */
+    public List<Order> findAllWithMemberDelivery() {
+        return entityManager.createQuery(
+                "select o from Order o " +
+                        "join fetch o.member m " +
+                        "join fetch o.delivery d", Order.class)
+                .getResultList();
+    }
 }
