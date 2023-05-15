@@ -72,4 +72,28 @@ public class OrderRepository {
                         "join fetch o.delivery d", Order.class)
                 .getResultList();
     }
+
+    /**
+     * 주문 목록 조회
+     * 계정과 배달 테이블 조인
+     * 주문 상품 테이블 조인 ( 1 : N)
+     * 1 + N 문제를 해결하기 위한 Collection Fetch Join
+     * 1 : N 을 조인하기 때문에 주문이 1개 당 2개 상품 주문 시 총 4개의 결과가 조회
+     * 중복을 제거하기 위해 Distinct 키워드 사용
+     * SQL Distinct 기능(모든 데이트가 같아야 중복제거) + 같은 Entity가 조회되면 애플리케이션에서 Entity 중복 제거
+     *
+     * 단점으로는 페이징 불가
+     * Collection Fetch Join은 한 번만 사용해야함
+     *
+     * @return List<Order> findAllWithOrderItem()
+     */
+    public List<Order> findAllWithOrderItem() {
+        return entityManager.createQuery(
+                "select distinct o from Order o " +
+                        "join fetch o.member m " +
+                        "join fetch o.delivery d " +
+                        "join fetch o.orderItems oi " +
+                        "join fetch oi.item i", Order.class)
+                .getResultList();
+    }
 }
