@@ -1,5 +1,6 @@
 package com.springbootjpa.springbootjpa.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,7 +25,7 @@ public class Member {
     private String name;
     @Embedded // 내장 타입을 의미
     private Address address;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>();
 }

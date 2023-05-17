@@ -1,5 +1,6 @@
 package com.springbootjpa.springbootjpa.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,9 +22,11 @@ public class Order {
     @JoinColumn(name = "member_id") // fk 설정
     private Member member;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL) // cascade = CascadeType.ALL == Order가  persist되면 OrderItem도 persist
     private List<OrderItem> orderItems = new ArrayList<>();
 
+    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // cascade = CascadeType.ALL == Order가  persist되면 Delivery도 persist
     @JoinColumn(name = "delivery_id") // fk 설정
     private Delivery delivery;

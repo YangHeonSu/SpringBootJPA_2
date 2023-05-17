@@ -96,4 +96,28 @@ public class OrderRepository {
                         "join fetch oi.item i", Order.class)
                 .getResultList();
     }
+
+    /**
+     * 주문 목록 페이징 조회 API
+     * Entity -> DTO 변환
+     * Entity -> DTO 변환 시 Order 뿐만 아니라 연관 관계인 OrderItem 또한 DTO 변환해줘야함.
+     * Collection Fetch Join 의 페이징 불가 문제를 해결
+     * toOne 관계는 Fetch Join ( toOne 관계는 row 수를 증가하지 않기 때문
+     *                                    || toMany 관계는 row 수 증가 주문이 1개 당 2개 상품 주문 시 총 4개의 결과가 조회)
+     * 컬렉션은 지연 로딩으로 조회 (Lazy) -> 1 + N 문제 발생   [컬렉션 -> orderItem item]??
+     * 1 + N 문제를 해결하기 위해 지연로딩 성능 최적화를 위해 hibernate.default_batch_fetch_size 사용
+\\
+     * @param offset int offset (초기값 0) 시작점
+     * @param limit int limit 몇 개씩 가져올지
+     * @return List<Order> orders
+     */
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+        return entityManager.createQuery(
+                        "select o from Order o " +
+                                "join fetch o.member m " +
+                                "join fetch o.delivery d", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
 }
