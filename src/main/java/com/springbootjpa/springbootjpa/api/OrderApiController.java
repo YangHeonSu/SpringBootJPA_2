@@ -6,6 +6,8 @@ import com.springbootjpa.springbootjpa.domain.OrderItem;
 import com.springbootjpa.springbootjpa.domain.OrderStatus;
 import com.springbootjpa.springbootjpa.repository.OrderRepository;
 import com.springbootjpa.springbootjpa.repository.OrderSearch;
+import com.springbootjpa.springbootjpa.repository.order.OrderQueryDTO;
+import com.springbootjpa.springbootjpa.repository.order.OrderQueryRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +20,9 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 public class OrderApiController {
+
     private final OrderRepository orderRepository;
+    private final OrderQueryRepository orderQueryRepository;
 
     /**
      * 주문 목록 Collection 조회 API
@@ -73,6 +77,18 @@ public class OrderApiController {
         // Entity -> DTO 변환 후 반환
         return all.stream().map(OrderResponseDTO::new).collect(Collectors.toList());
     }
+
+    /**
+     * 주문 목록 페이징 조회 API
+     * JPA -> DTO 직접 반환
+     * 1 + N 문제 발생
+     * @return List<OrderQueryDTO> orders
+     */
+    @GetMapping("/api/v3/orders")
+    public List<OrderQueryDTO> findAllV3() {
+        return orderQueryRepository.findAll_OrderQueryDTO();
+    }
+
     @Getter
     static class OrderResponseDTO {
         private Long orderId;
