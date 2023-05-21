@@ -86,7 +86,18 @@ public class OrderApiController {
      */
     @GetMapping("/api/v3/orders")
     public List<OrderQueryDTO> findAllV3() {
-        return orderQueryRepository.findAll_OrderQueryDTO();
+        return orderQueryRepository.findAllV3_OrderQueryDTO();
+    }
+    
+    /**
+     * 주문 목록 페이징 조회 API
+     * JPA -> DTO 직접 반환
+     * V3에서 발생한 1 + N 해결 
+     * @return List<OrderQueryDTO> orders
+     */
+    @GetMapping("/api/v4/orders")
+    public List<OrderQueryDTO> findAllV4() {
+        return orderQueryRepository.findAllV4_OrderQueryDTO();
     }
 
     @Getter
