@@ -2,6 +2,7 @@ package com.springbootjpa.springbootjpa.repository.order;
 
 import com.springbootjpa.springbootjpa.domain.Address;
 import com.springbootjpa.springbootjpa.domain.OrderStatus;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter @Setter
+@EqualsAndHashCode(of = "orderId") // stream을 통해 mapping할 때 기준 값 설정
 public class OrderQueryDTO {
     private Long orderId;
     private String name;
@@ -23,5 +25,14 @@ public class OrderQueryDTO {
         this.orderDate = orderDate;
         this.orderStatus = orderStatus;
         this.address = address;
+    }
+
+    public OrderQueryDTO(Long orderId, String name, LocalDateTime orderDate, OrderStatus orderStatus, Address address, List<OrderQueryItemDTO> orderItems) {
+        this.orderId = orderId;
+        this.name = name;
+        this.orderDate = orderDate;
+        this.orderStatus = orderStatus;
+        this.address = address;
+        this.orderItems = orderItems;
     }
 }

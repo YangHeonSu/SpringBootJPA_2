@@ -3,6 +3,7 @@ package com.springbootjpa.springbootjpa.repository.order;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -38,10 +39,10 @@ public class OrderQueryRepository {
      * 컬렉션인 OrderItem을 주문 Id(OrderId)를 Join을 통해 where in으로 조회
      * 조회된 OrderItem을 Map<Long, List<OrderQueryItemDTO>>형태로 변환 후
      * 루프를 돌려서 OrderQueryDTO의 List<OrderQueryItemDTO> 설정
-     * 1 + N 문제 해결 -> 1 + 1 쿼리 발생 (Query 1번 컬렉션 1번) 
+     * 1 + N 문제 해결 -> 1 + 1 쿼리 발생 (Query 1번 컬렉션 1번)
      * ex) 주문과 toOne 관계인 Member, Delivery join 쿼리 1
      * ex) 주문과 toMany 관계인 OrderItem 조회 쿼리 1번
-     * 
+     *
      * @return List<OrderQueryDTO> findAll_OrderQueryDTO()
      */
     public List<OrderQueryDTO> findAllV4_OrderQueryDTO() {
@@ -49,7 +50,7 @@ public class OrderQueryRepository {
         List<OrderQueryDTO> orderInfo = findOrders();  // 주문 정보 (주문정보 + 주문자 + 배송정보) 
         List<Long> orderIds = getOrderIds(orderInfo); // 주문 아이디를 List 형태로 가져오기 (주문 상품정보를 in절을 통해 가져오기 위함)
         List<OrderQueryItemDTO> orderItems = getOrderItems(orderIds); // 주문 Id List를 in절을 사용하여 주문 상품 조회
-        
+
         // setOrderItemsMap => in 절을 통해 가져온 주문 상품 정보를  Map 형태로 변환
         orderInfo.forEach(orderQueryDTO -> orderQueryDTO.setOrderItems(setOrderItemsMap(orderItems).get(orderQueryDTO.getOrderId())));
         return orderInfo;
@@ -127,5 +128,25 @@ public class OrderQueryRepository {
                 "join o.delivery d", OrderQueryDTO.class
         ).getResultList();
 
+    }
+
+    /**
+     * 주문 목록 조회
+     * 계정과 배달 테이블 조인
+     * 주문 상품 테이블 조인 ( 1 : N)
+     * 1 : N 을 조인하기 때문에 주문이 1개 당 2개 상품 주문 시 총 4개의 결과가 조회
+     * JPA -> DTO 직접 반환
+     *
+     * 단점으로는 페이징 불가
+     *
+     * @return List<OrderQueryFlatDTO> findAllWithOrderItem()
+     */
+    public List<OrderQueryFlatDTO> findAllV5_OrderQueryDTO() {
+        return entityManager.createQuery("select new com.springbootjpa.springbootjpa.repository.order.OrderQueryFlatDTO(o.id, m.name, o.orderDateTime, o.orderStatus, d.address, i.name, oi.orderPrice, oi.count) " +
+                "from Order o " +
+                "join o.member m " +
+                "join o.delivery d " +
+                "join o.orderItems oi " +
+                "join oi.item i", OrderQueryFlatDTO.class).getResultList();
     }
 }
