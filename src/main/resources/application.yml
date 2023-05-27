@@ -16,6 +16,9 @@ spring:
         default_batch_fetch_size: 100 # 100으로 설정 후 총 데이터가 1000건이면 in절에 100개가 들어가고 10번 조회
                                       # 100 ~ 1000 사이로 설정하는 것 추천
                                       # DB 종류마다 다르긴 하지만 보통 1000개 이상 조회 시 오류나기 때문
+    open-in-view: true
+    # true가 기본 값
+    # false인 경우 Transactional안에서 지연로딩을 처리해야함
 
 logging:
   level:
