@@ -2,7 +2,7 @@ package com.springbootjpa.springbootjpa.service;
 
 import com.springbootjpa.springbootjpa.domain.*;
 import com.springbootjpa.springbootjpa.repository.ItemRepository;
-import com.springbootjpa.springbootjpa.repository.MemberRepository;
+import com.springbootjpa.springbootjpa.repository.MemberRepositoryOld;
 import com.springbootjpa.springbootjpa.repository.OrderRepository;
 import com.springbootjpa.springbootjpa.repository.OrderSearch;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final MemberRepository memberRepository;
+    private final MemberRepositoryOld memberRepositoryOld;
     private final ItemRepository itemRepository;
     
     /**
@@ -31,7 +31,7 @@ public class OrderService {
     @Transactional
     public Long order(Long memberId, Long itemId, int count) {
         //엔티티 조회
-        Member member = memberRepository.findOne(memberId);
+        Member member = memberRepositoryOld.findOne(memberId);
         Item item = itemRepository.findOne(itemId);
         // 배송정보 생성
         Delivery delivery = new Delivery();

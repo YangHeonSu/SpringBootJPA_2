@@ -45,7 +45,8 @@ public class MemberService {
      * @return Member
      */
     public Member findOne(Long id) {
-        return memberRepository.findOne(id);
+        return memberRepository.findById(id).get();
+
     }
 
     /*
@@ -62,11 +63,10 @@ public class MemberService {
 
     @Transactional
     public void update(Long id, String name) {
-        
+
         // JPA 수정 시에는 변경 감지 이용
-        
-        Member member = memberRepository.findOne(id);
-        member.setName(name); 
+        Member member = memberRepository.findById(id).get();
+        member.setName(name);
     }
 
 }

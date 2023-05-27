@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class MemberRepositoryTest {
+public class MemberRepositoryOldTest {
 
     /**
      * 테스트 클래스 Transactional 어노테이션이 있으면 DB에 값이 rollback되어 저장은 안됨.
@@ -18,7 +18,7 @@ public class MemberRepositoryTest {
      */
 
     @Autowired
-    MemberRepository memberRepository;
+    MemberRepositoryOld memberRepositoryOld;
 
     @Test
     @Transactional

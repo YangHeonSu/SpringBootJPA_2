@@ -4,7 +4,6 @@ import com.springbootjpa.springbootjpa.domain.Address;
 import com.springbootjpa.springbootjpa.domain.Member;
 import com.springbootjpa.springbootjpa.domain.MemberDTO;
 import com.springbootjpa.springbootjpa.service.MemberService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
